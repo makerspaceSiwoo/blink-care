@@ -14,21 +14,21 @@ class BlinkTracker:
         self.iris_centers = {
             # 왼쪽 눈
             "left_center": 468,    # 왼쪽 눈동자 중심
-            "left_top": 386,       # 왼쪽 윗눈꺼풀 (눈 위)
-            "left_bottom": 374,    # 왼쪽 아랫눈꺼풀 (눈 아래)
-            "left_outer": 33,      # 왼쪽 눈 바깥쪽 끝
-            "left_inner": 133,     # 왼쪽 눈 안쪽 끝
-            "left_upper_mid": 160, # 왼쪽 눈 윗눈꺼풀 중앙
-            "left_lower_mid": 144, # 왼쪽 눈 아랫눈꺼풀 중앙
+            # "left_top": 386,       # 왼쪽 윗눈꺼풀 (눈 위)
+            # "left_bottom": 374,    # 왼쪽 아랫눈꺼풀 (눈 아래)
+            # "left_outer": 33,      # 왼쪽 눈 바깥쪽 끝
+            # "left_inner": 133,     # 왼쪽 눈 안쪽 끝
+            # "left_upper_mid": 160, # 왼쪽 눈 윗눈꺼풀 중앙
+            # "left_lower_mid": 144, # 왼쪽 눈 아랫눈꺼풀 중앙
 
             # 오른쪽 눈
             "right_center": 473,    # 오른쪽 눈동자 중심
-            "right_top": 159,       # 오른쪽 윗눈꺼풀 (눈 위)
-            "right_bottom": 145,    # 오른쪽 아랫눈꺼풀 (눈 아래)
-            "right_outer": 263,     # 오른쪽 눈 바깥쪽 끝
-            "right_inner": 362,     # 오른쪽 눈 안쪽 끝
-            "right_upper_mid": 387, # 오른쪽 눈 윗눈꺼풀 중앙
-            "right_lower_mid": 373, # 오른쪽 눈 아랫눈꺼풀 중앙
+            # "right_top": 159,       # 오른쪽 윗눈꺼풀 (눈 위)
+            # "right_bottom": 145,    # 오른쪽 아랫눈꺼풀 (눈 아래)
+            # "right_outer": 263,     # 오른쪽 눈 바깥쪽 끝
+            # "right_inner": 362,     # 오른쪽 눈 안쪽 끝
+            # "right_upper_mid": 387, # 오른쪽 눈 윗눈꺼풀 중앙
+            # "right_lower_mid": 373, # 오른쪽 눈 아랫눈꺼풀 중앙
         }
 
     def process(self, frame):
