@@ -1,27 +1,17 @@
 import cv2
 import time
-import threading
-import PySimpleGUI as sg
+import numpy as np
 from modules.blink_tracker import BlinkTracker
 
-# 전역 메시지창
-alert_window = None
+# 메시지창 이미지 생성 (OpenCV)
+def show_opencv_alert():
+    msg_img = np.ones((100, 300, 3), dtype=np.uint8) * 255
+    cv2.putText(msg_img, "Blink your eyes!", (30, 60),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+    cv2.imshow("ALERT", msg_img)
 
-# 블로킹 메시지창 열기
-def show_blink_alert():
-    global alert_window
-    if alert_window is None:
-        layout = [[sg.Text("눈을 깜빡이세요!", font=("Arial", 16), justification='center')]]
-        alert_window = sg.Window("눈 건강 알림", layout,
-                                 finalize=True, keep_on_top=True,
-                                 no_titlebar=True, grab_anywhere=True)
-
-# 메시지창 닫기
-def close_blink_alert():
-    global alert_window
-    if alert_window is not None:
-        alert_window.close()
-        alert_window = None
+def close_opencv_alert():
+    cv2.destroyWindow("ALERT")
 
 if __name__ == "__main__":
     cap = cv2.VideoCapture(0)
@@ -44,22 +34,27 @@ if __name__ == "__main__":
 
                 # 눈을 감으면 타이머 리셋 + 창 닫기
                 if not status["left"] or not status["right"]:
+                    print("eyes closed")
                     last_blink_time = now
                     if alert_active:
-                        close_blink_alert()
+                        close_opencv_alert()
                         alert_active = False
 
-                # 눈을 일정 시간(5초) 이상 안 감았으면 경고
-                elif now - last_blink_time > 1:
+                # 눈 뜨고 있는 시간 5초 초과 → 경고창 표시
+                elif now - last_blink_time > 4:
                     if not alert_active:
-                        show_blink_alert()
+                        show_opencv_alert()
                         alert_active = True
 
-        # OpenCV 창에 눈 상태 보여주기
+                # 상태 유지 시, 매 프레임마다 alert 창 갱신
+                if alert_active:
+                    show_opencv_alert()
+
+        # 프레임 표시
         cv2.imshow("Blink Care", frame)
         if cv2.waitKey(1) & 0xFF == 27:
             break
 
-    close_blink_alert()
+    close_opencv_alert()
     cap.release()
     cv2.destroyAllWindows()
