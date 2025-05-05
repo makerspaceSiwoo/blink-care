@@ -8,5 +8,15 @@ venv/
 # VSCode 설정 (쓰는 경우)
 .vscode/
 
+# Build artifacts
+build/
+dist/
+*.spec
+*.exe
+
+# System
+.DS_Store
+*.log
+
 # Mac OS 쓰레기 파일
 .DS_Store
