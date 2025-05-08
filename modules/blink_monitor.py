@@ -1,8 +1,8 @@
 import time
 import cv2
 from threading import Thread
-from .eye_tracker import EyeTracker
-from .constants import BLINK_THRESHOLD_SEC
+from modules.eye_tracker import EyeTracker
+from modules.constants import BLINK_THRESHOLD_SEC
 
 
 class BlinkMonitor(Thread):

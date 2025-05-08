@@ -1,8 +1,8 @@
 import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QWidget
-from .notifier import Notifier
-from .blink_monitor import BlinkMonitor
+from modules.notifier import Notifier
+from modules.blink_monitor import BlinkMonitor
 
 
 class MainWindow(QtWidgets.QMainWindow):
