@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from modules.constants import COLOR_DISTANCE_THRESHOLD
+from modules.constants import COLOR_DISTANCE_THRESHOLD, BRIGHTNESS_THRESHOLD
 
 
 class EyeTracker:
@@ -23,7 +23,37 @@ class EyeTracker:
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         return self.face_mesh.process(rgb_frame)
 
-    def is_eye_open(self, frame, landmarks, radius=2):
+    def is_eye_open(self, frame, landmarks):
+        """
+        눈 감지 알고리즘 : pupil 중심점의 색이 검은색이면 눈을 감은 것으로 판단
+        """
+        h, w, _ = frame.shape
+        status = {}
+
+        for eye, (pupil_idx, edge_idx) in self.pupil_check_pairs.items():
+            p = landmarks.landmark[pupil_idx]
+
+            pupil_cx = int(p.x * w)
+            pupil_cy = int(p.y * h)
+
+            if not (
+                0 <= pupil_cx < w
+                and 0 <= pupil_cy < h
+            ):
+                status[eye] = False
+                continue
+
+            pupil_bgr = frame[pupil_cy, pupil_cx]
+
+            # 디버깅 색상 저장
+            self.last_debug_colors[f"{eye}_pupil"] = tuple(map(int, pupil_bgr))
+
+            brightness = np.mean(pupil_bgr)
+            status[eye] = brightness < BRIGHTNESS_THRESHOLD
+
+        return status
+
+    def is_eye_open_v2(self, frame, landmarks, radius=2):
         """
         눈 감지 알고리즘 : pupil 중심점과 edge 사이를 sclera로 정의한 후,
         sclera 샘플링 위치에서 눈동자 색상과 비교하여 눈 감음 여부 판단
