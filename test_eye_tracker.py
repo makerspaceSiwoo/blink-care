@@ -17,6 +17,7 @@ while True:
     if results.multi_face_landmarks:
         for landmarks in results.multi_face_landmarks:
             status = tracker.is_eye_open(frame, landmarks)
+            tracker.draw_debug_points(frame, landmarks)
 
             left = "Open" if status["left"] else "Closed"
             right = "Open" if status["right"] else "Closed"
