@@ -30,7 +30,7 @@ class BlinkMonitor(Thread):
 
             if results.multi_face_landmarks:
                 for landmarks in results.multi_face_landmarks:
-                    status = self.tracker.is_eye_open(frame, landmarks)
+                    status = self.tracker.is_eye_open_v2(frame, landmarks)
                     if not status["left"] or not status["right"]:
                         self.last_blink_time = now
                         if self.alert_shown:
