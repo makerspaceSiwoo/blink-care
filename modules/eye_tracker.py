@@ -36,10 +36,7 @@ class EyeTracker:
             pupil_cx = int(p.x * w)
             pupil_cy = int(p.y * h)
 
-            if not (
-                0 <= pupil_cx < w
-                and 0 <= pupil_cy < h
-            ):
+            if not (0 <= pupil_cx < w and 0 <= pupil_cy < h):
                 status[eye] = False
                 continue
 
@@ -69,7 +66,9 @@ class EyeTracker:
             pupil_cy = int(p.y * h)
 
             ratio = 0.5
-            sclera_cx = int((p.x + ratio * (e.x - p.x)) * w) # sclera 계산 문제점 : 눈동자를 한쪽 측면으로 옮길 경우, 눈 감았다고 잘못 판단할 가능성 있음.
+            sclera_cx = int(
+                (p.x + ratio * (e.x - p.x)) * w
+            )  # sclera 계산 문제점 : 눈동자를 한쪽 측면으로 옮길 경우, 눈 감았다고 잘못 판단할 가능성 있음.
             sclera_cy = int((p.y + ratio * (e.y - p.y)) * h)
 
             if not (
@@ -117,6 +116,8 @@ class EyeTracker:
         step_y = 60
 
         # 1. 디버깅 색상 점 (오른쪽 상단)
-        for i, key in enumerate(["left_pupil", "left_sclera", "right_pupil", "right_sclera"]):
+        for i, key in enumerate(
+            ["left_pupil", "left_sclera", "right_pupil", "right_sclera"]
+        ):
             color = self.last_debug_colors.get(key, (0, 0, 0))
-            cv2.circle(frame, (base_x, base_y + i * step_y), 20, color, -1)   
+            cv2.circle(frame, (base_x, base_y + i * step_y), 20, color, -1)

@@ -33,13 +33,28 @@ pyinstaller main.py --onefile --windowed --name BlinkCare --add-data "D:\Project
 
 ## 프로젝트 구조
 blink-care/
-├── main.py                    # 앱 실행 진입점
-├── modules/
-│ ├── constants.py             # 설정값 경로 및 기본값
-│ ├── notifier.py              # PyQt 알림창
-│ ├── blink_monitor.py         # 눈 감지 상태 + 타이머 추적
-│ ├── eye_tracker.py           # Mediapipe로 눈 상태 감지
-│ └── main_window.py           # 앱 실행 메인창
+├── main.py                     # 데스크탑 앱 진입점
+├── web_app.py                  # 웹 앱 실행 파일 (Streamlit 등)
 ├── requirements.txt
-├── .gitignore
+├── models/
+│   └── blink_cnn.h5            # 학습된 ML 모델
+├── modules/
+│   ├── monitor.py              # 카메라 열고 프레임 추출
+│   ├── eye_crop.py             # mediapipe로 눈 부분 영역 이미지 추출
+│   ├── preprocessor.py         # 흑백이미지로 변경 & resize
+│   ├── blink_classifier.py     # ML 모델 추론
+│   └── blink_timer.py          # 눈 깜빡임 시간 측정
+├── ui/
+│   └── notifier.py             # PyQt 등 알림창 GUI
+├── web/
+│   ├── app.py                  # Streamlit/FastAPI 등 웹 인터페이스
+│   └── static/                 # optional, html/css/js 등
+├── scripts/
+│   └── train.py                # 학습 스크립트
+├── data/                       # (로컬에서 학습시 사용)
+│   └── ...
 └── README.md
+
+
+# Thread 사용 - camera.py, blink_timer.py, main.py
+#https://www.kaggle.com/datasets/arindamxd/eyes-open-closed-dataset/data - 학습에 사용한 데이터셋
