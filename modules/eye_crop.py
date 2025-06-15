@@ -4,8 +4,8 @@ import mediapipe as mp
 import numpy as np
 
 
-# 왼쪽눈 관련 : 위-159, 아래-145, 바깥-33, 안쪽-133, 눈동자 468
-# 오른쪽 눈 : 위-386, 아래-274, 바깥-263, 안쪽-362, 눈동자:473
+# 오른쪽 눈 : 위-159, 아래-145, 바깥-33, 안쪽-133, 눈동자 468
+# 왼쪽 눈 : 위-386, 아래-274, 바깥-263, 안쪽-362, 눈동자:473
 
 
 class EyeCrop:
@@ -17,8 +17,8 @@ class EyeCrop:
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5,
         )
-        self.pupils = {"left": 468, "right": 473}
-        self.eye_indices = {"left": [33, 133, 159, 145], "right": [263, 362, 386, 374]}
+        self.pupils = {"right": 468, "left": 473}
+        self.eye_indices = {"right": [33, 133, 159, 145], "left": [263, 362, 386, 374]}
 
     def crop_eye_area(self, frame, eye: Literal["left", "right"] = "left"):
         """
@@ -33,7 +33,7 @@ class EyeCrop:
         """
         h, w, _ = frame.shape
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.face_mesh(rgb)
+        results = self.face_mesh.process(rgb)
 
         if not results.multi_face_landmarks:
             return None
@@ -53,8 +53,13 @@ class EyeCrop:
         # 눈 주위 길이 측정 후 눈동자 중심으로 적당한 영역 추출
         xs, ys = zip(*coords)
         eye_width = max(max(xs) - min(xs), max(ys) - min(ys))
+        percent = 0.8
 
-        x1, y1 = max(0, cx - eye_width), max(0, cy - eye_width)
-        x2, y2 = min(w, cx + eye_width), min(h, cy + eye_width)
+        x1, y1 = max(0, cx - int(eye_width * percent)), max(
+            0, cy - int(eye_width * percent)
+        )
+        x2, y2 = min(w, cx + int(eye_width * percent)), min(
+            h, cy + int(eye_width * percent)
+        )
 
         return frame[y1:y2, x1:x2].copy()

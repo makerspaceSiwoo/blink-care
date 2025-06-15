@@ -11,7 +11,6 @@ import time
 # 디렉토리 경로
 train_data_dir = "D:/Projects/blink-care/data/train"
 test_data_dir = "D:/Projects/blink-care/data/test"
-model_path = "D:/Projects/blink-care/models/blink_cnn.h5"
 
 # 하이퍼파라미터
 batch_size = 32
@@ -24,6 +23,7 @@ train_gen = train_datagen.flow_from_directory(
     train_data_dir,
     target_size=image_size,
     batch_size=batch_size,
+    color_mode="grayscale",
     class_mode="binary",
     shuffle=True,
 )
@@ -32,6 +32,7 @@ val_gen = train_datagen.flow_from_directory(
     test_data_dir,
     target_size=image_size,
     batch_size=batch_size,
+    color_mode="grayscale",
     class_mode="binary",
     shuffle=False,
 )
@@ -39,7 +40,7 @@ val_gen = train_datagen.flow_from_directory(
 # 간단한 CNN 모델
 model = Sequential(
     [
-        Conv2D(32, (3, 3), activation="relu", input_shape=(*image_size, 3)),
+        Conv2D(32, (3, 3), activation="relu", input_shape=(*image_size, 1)),
         MaxPooling2D(),
         Conv2D(64, (3, 3), activation="relu"),
         MaxPooling2D(),
@@ -55,7 +56,7 @@ model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"]
 history = model.fit(train_gen, validation_data=val_gen, epochs=10)
 
 # 모델 저장
-model.save(model_path)
+model.save("blink_model.keras")
 
 # 성능 시각화
 plt.plot(history.history["accuracy"], label="Train Acc")
