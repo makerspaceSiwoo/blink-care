@@ -8,7 +8,7 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 960)
 
 eyecrop = EyeCrop()
-model = load_model("blink_model.keras")
+model = load_model("model/blink_model.keras")
 
 while True:
     ret, frame = cap.read()
