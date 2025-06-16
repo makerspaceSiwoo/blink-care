@@ -15,20 +15,22 @@ while True:
     if not ret:
         break
 
+    flipped_frame = cv2.flip(frame, 1)
+
     # 왼쪽 눈 처리
-    left_eye = eyecrop.crop_eye_area(frame, eye="left")
+    left_eye = eyecrop.crop_eye_area(flipped_frame, eye="left")
     if left_eye is not None:
         input_tensor = preprocess_eye(left_eye)
         pred = model.predict(input_tensor, verbose=0)
         is_open = pred[0][0] > 0.5
 
         left_eye_small = cv2.resize(left_eye, (80, 80))
-        h, w, _ = frame.shape
+        h, w, _ = flipped_frame.shape
         y2 = h - 10
         y1 = y2 - 80
         x2 = w - 10 - 80 - 20  # 오른쪽 눈 옆에 공간
         x1 = x2 - 80
-        frame[y1:y2, x1:x2] = left_eye_small
+        flipped_frame[y1:y2, x1:x2] = left_eye_small
 
         # 1. 텍스트 내용
         label = "left : Open" if is_open else "left : Closed"
@@ -36,7 +38,7 @@ while True:
         text_pos = (x1, y1 - 5)  # 이미지 위 살짝 위에 표시
         # 3. 텍스트 그리기
         cv2.putText(
-            frame,
+            flipped_frame,
             label,
             text_pos,
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
@@ -47,19 +49,19 @@ while True:
         )
 
     # 오른쪽 눈 처리
-    right_eye = eyecrop.crop_eye_area(frame, eye="right")
+    right_eye = eyecrop.crop_eye_area(flipped_frame, eye="right")
     if right_eye is not None:
         input_tensor = preprocess_eye(right_eye)
         pred = model.predict(input_tensor, verbose=0)
         is_open = pred[0][0] > 0.5
 
         right_eye_small = cv2.resize(right_eye, (80, 80))
-        h, w, _ = frame.shape
+        h, w, _ = flipped_frame.shape
         y2 = h - 10
         y1 = y2 - 80
         x2 = w - 10
         x1 = x2 - 80
-        frame[y1:y2, x1:x2] = right_eye_small
+        flipped_frame[y1:y2, x1:x2] = right_eye_small
 
         # 1. 텍스트 내용
         label = "right : Open" if is_open else "right : Closed"
@@ -67,7 +69,7 @@ while True:
         text_pos = (x1, y1 - 5)  # 이미지 위 살짝 위에 표시
         # 3. 텍스트 그리기
         cv2.putText(
-            frame,
+            flipped_frame,
             label,
             text_pos,
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
@@ -77,7 +79,7 @@ while True:
             lineType=cv2.LINE_AA,
         )
 
-    cv2.imshow("Monitor", frame)
+    cv2.imshow("Monitor", flipped_frame)
 
     if cv2.waitKey(1) & 0xFF == 27:
         break

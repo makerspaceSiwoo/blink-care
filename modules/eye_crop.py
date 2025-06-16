@@ -4,8 +4,8 @@ import mediapipe as mp
 import numpy as np
 
 
-# 오른쪽 눈 : 위-159, 아래-145, 바깥-33, 안쪽-133, 눈동자 468
-# 왼쪽 눈 : 위-386, 아래-274, 바깥-263, 안쪽-362, 눈동자:473
+# 왼쪽 눈 : 위-159, 아래-145, 바깥-33, 안쪽-133, 눈동자 468
+# 오른쪽 눈 : 위-386, 아래-274, 바깥-263, 안쪽-362, 눈동자:473
 
 
 class EyeCrop:
@@ -17,8 +17,8 @@ class EyeCrop:
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5,
         )
-        self.pupils = {"right": 468, "left": 473}
-        self.eye_indices = {"right": [33, 133, 159, 145], "left": [263, 362, 386, 374]}
+        self.pupils = {"left": 468, "right": 473}
+        self.eye_indices = {"left": [33, 133, 159, 145], "right": [263, 362, 386, 374]}
 
     def crop_eye_area(self, frame, eye: Literal["left", "right"] = "left"):
         """
