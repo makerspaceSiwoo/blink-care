@@ -1,7 +1,6 @@
 import cv2
 from typing import Literal
 import mediapipe as mp
-import numpy as np
 
 
 # 왼쪽 눈 : 위-159, 아래-145, 바깥-33, 안쪽-133, 눈동자 468
