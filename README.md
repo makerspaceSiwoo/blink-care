@@ -15,6 +15,7 @@ MVP - 눈 깜빡임을 감지하는 Python, ML 기반 타이머
 - 버전: v1.0.0
 
 ## 프로젝트 구조
+'''
 blink-care/
 ├── main.py                     # 데스크탑 blink-care 실행
 ├── blink_model_test.py         # ML 모델 테스트 및 작업 플로우 파일
@@ -35,6 +36,7 @@ blink-care/
 ├── __archive__/                # (더 이상 사용하지 않는 코드 - 중간 과정)
 │   └── ...
 └── README.md
+'''
 
-# https://www.kaggle.com/datasets/arindamxd/eyes-open-closed-dataset/data - 학습에 사용한 데이터셋
+-  https://www.kaggle.com/datasets/arindamxd/eyes-open-closed-dataset/data - 학습에 사용한 데이터셋
 
